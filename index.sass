@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap')
+//*代表所有的html的標籤指令，都要依照這樣格式進行
+
+//指定顏色變數
+$colorBlueRoofLight: #52796F
+$colorBlueRoofDark: #2F3E46
+
+//定義漸層
+
+//屋頂的漸層
+$roofGradient: linear-gradient(150deg, $colorBlueRoofLight, $colorBlueRoofDark)
+//一整條從白天到晚上的背景顏色
+$sceneGradient: linear-gradient(#D8DB7C,#CDD90C,#ABC50F,#7BA330)
+$sceneGradient2: linear-gradient(#275F46,#45664B,#4A6131)
+
+$c1: #354F52
+$c2: #5e548e
+$box_bgc: #cddafd
+$box1_bgc: #CAD2C5
+$box2_bgc: #CAD2C5
+
+
+//設定元件的寬與高
+@mixin size($w,$h:$w,$bdrs:0)
+    width: $w
+    height: $h
+    border-radius: $bdrs
+
+//設定下層的物件置中
+@mixin flex($j:center,$a:center)
+    display: flex
+    justify-content: $j //主軸線:左右
+    align-items: $a  //副軸線:上下
+
+//設定物件的位置，靠左多少px，靠上多少px
+@mixin abpos($l:initial,$t:initial)
+    position: absolute
+    left: $l
+    top: $t
+//畫圓弧的方框，可以直接畫圓
+@mixin bdrsRect($w,$h:$w)
+    width: $w
+    height: $h
+    border-radius: $h/2
+
+//=============================================================
+@mixin person($x,$y,$s)
+        +size(350px,250px,200px) //三眼怪的大小
+        +abpos($x,$y) //三眼怪的位置
+        background: $sceneGradient //三眼怪的顏色
+        scale:$s
+        .eyes
+            .Reye //右邊眼睛
+                +bdrsRect(60px) //眼睛直徑
+                +abpos(240px,70px) //眼睛位置
+                background-color: #fff //眼睛顏色 
+            .Meye //中間眼睛
+                +bdrsRect(60px)
+                +abpos(160px,60px) 
+                background-color: #fff                        
+            .Leye //左邊眼睛
+                +bdrsRect(60px)
+                +abpos(80px,70px)
+                background-color: #fff 
+            .reye //右邊眼球
+                +bdrsRect(35px)
+                +abpos(260px,80px) 
+                background-color: #000000  
+            .meye //中間眼球
+                +bdrsRect(35px)
+                +abpos(180px,70px) 
+                background-color: #000000                      
+            .leye //左邊眼球
+                +bdrsRect(35px)
+                +abpos(100px,80px)
+                background-color: #000000
+        .mouth //嘴巴
+            +size(40px,40px,50px) //嘴巴大小
+            +abpos(180px,180px)
+            background: $sceneGradient2
+        .noseb //因為三眼怪沒有鼻子所以我改成觸角
+            width: 0 //觸角寬度
+            height: 0 //觸角長度
+            border: 30px solid //觸角大小
+            border-color: transparent transparent #D8DB7C transparent //觸角顏色
+            +abpos(160px,-50px) 
+        .noset //觸角上的圓形
+            +bdrsRect(15px)
+            +abpos(182px,-30px)
+            background: #D8DB7C
+        .ears
+            .Lear //左邊耳朵
+                width: 0
+                height: 0 
+                border: 30px solid
+                border-color: transparent transparent #ABC50F transparent 
+                +abpos(-25px,70px)
+                transform: rotate(50deg) // 旋轉50度
+            .Rear //右邊耳朵
+                width: 0
+                height: 0
+                border: 30px solid
+                border-color: transparent transparent #ABC50F transparent 
+                +abpos(317px,70px)
+                transform: rotate(310deg) //旋轉310度
+//=============================================================
+
+//=============================================================
+@mixin person_active($x,$y)
+        +abpos($x,$y)
+        .mouth
+            +size(40px,50px,50px) 
+            +abpos(180px,175px) 
+            transition: 1s //漸漸變大，花1s
+        .noset
+            +abpos(182px,-50px) 
+            transition: 0.5s  //漸漸變大，花0.5s
+//=============================================================
+
+//=============================================================
+@mixin person_hover($x,$y)
+        +abpos($x,$y)
+        .eyes
+            .reye
+                +bdrsRect(35px)
+                +abpos(263px,77px) 
+                background-color: #000000
+                transition: 0.5s  //漸漸往右上，花0.5s 
+            .meye
+                +bdrsRect(35px)
+                +abpos(183px,67px) 
+                background-color: #000000
+                transition: 0.5s  //漸漸往右上，花0.5s                    
+            .leye
+                +bdrsRect(35px)
+                +abpos(103px,77px)
+                background-color: #000000 
+                transition: 0.5s //漸漸往右上，花0.5s 
+//=============================================================
+
+*
+    font-family: "Playfair Display","微軟正黑體"
+html,body
+    +size(100%)
+    position: relative
+    +flex()  //讓下一層物件置中
+    .box
+        +size(600px,315px,15px)   //寬高，四個角的圓弧
+        +abpos(200px,100px)     //座位位置           
+        background: $roofGradient
+        .box1
+            +bdrsRect(200px)  //畫圓，直徑為200px
+            +abpos(20px,40px)
+            +flex()
+            background-color: $box1_bgc
+            h4
+                font-size: 28px   //文字大小
+                letter-spacing: 1px  //字與字間的間距
+                font-weight: 800    //字的粗細大小
+                line-height: 35px   //一行的高度
+                opacity: 0.6 //透明度0.6
+                color: #003f88
+        .box2
+            +size(300px,50px,5px)
+            +abpos(250px,40px)
+            background-color: $box2_bgc
+            h4  
+                font-size: 25px
+                letter-spacing: 1px
+                font-weight: 900
+                line-height: 35px
+                padding: 10px 0px //內距
+                margin: 0 10px //外距
+                color: $c2
+        .box3  
+            +size(300px,170px,5px)
+            +abpos(250px,100px)
+            background-color: $box2_bgc
+            h5  
+                font-size: 20px
+                letter-spacing: 1px
+                font-weight: 900
+                line-height: 35px
+                padding: 10px 0px
+                margin: 0 10px
+                color: $c1
+                opacity: 0 //一開始看不到
+
+    .box:hover   //在box物件範圍內滑入滑鼠游標
+        .box1
+            h4
+             opacity: 0 //字會不見
+             transition: 0.5s 0.5s //延遲0.5s後開始動作，花0.5s完成動作結束
+    .box:active  //在.box物件按下滑鼠
+        .box3
+            h5
+                opacity: 1 //字會出現
+                transition: 0.5s  //花0.5s完成動作結束
+        .box1
+            h4
+                opacity: 1 //字的顏色會變深
+                transition: 0.5s //花0.5s完成動作結束
+    .person        
+        +person (400px,550px,1) 
+    .person1        
+        +person (100px,500px,0.3) //縮小0.3倍
+    .person2        
+        +person (200px,400px,0.5)
+    .person3        
+        +person (800px,100px,0.2)
+        left: 700px
+        top: 5px   
+    .person:active
+        +person_active(400px,550px) //滑鼠點擊三眼怪，會有表情變化
+    .person1:active
+        +person_active(100px,510px) //滑鼠點擊三眼怪，會有表情變化，並移動位置
+    .person2:hover
+        +person_hover(200px,370px) //滑鼠移到三眼怪上，會有表情變化，並移動位置
+    .youtubeDisplay:hover
+        .person3  //滑鼠移到youtube的框框內，三眼怪會有表情變化
+            +person_active(880px,10px) 
+            left: -140px
+            top: -95px                             
+    .youtubeDisplay
+        +size(800px,400px)  //要播放的寬高
+        +abpos(850px,100px)  //位置
+        .person3
+            +person(0px,0px,0.2) 
+            left: -140px
+            top: -95px     
+    .imageDisplay //教科的logo
+        +size(100px,100px)  //要播放的寬高
+        +abpos(80px,10px)  //位置
+        .img1
+            display: cover
+    .h5pDisplay 
+        +size(800px,400px)  //要播放的寬高
+        +abpos(800px,450px)  //位置
